@@ -1,0 +1,37 @@
+import { NextResponse } from "next/server";
+import{SignJWT}from"jose"
+import connectDB from "../../../utils/database";
+import{UserModel}from "../../../utils/schemaModels"
+
+export async function POST(request){
+    const reqBody=await request.json()
+    try{
+        await connectDB()
+        const savedUserData=await UserModel.findOne({email:reqBody.email})
+        if(savedUserData){
+             if(reqBody.password===savedUserData.password){
+                //ユーザーデータが存在する場合の処理
+                const secretKey=new TextEncoder().encode("next-market-app-book")
+                    const payload={
+                    email:reqBody.email
+                    }
+                    //追加↓
+                    const token=await new SignJWT(payload)
+                    .setProtectedHeader({alg:"HS256"})
+                    .setExpirationTime("1d")
+                    .sign(secretKey)
+                     console.log(token)//追加
+                return NextResponse.json({message:"ログイン成功！",token:token})
+                }else{
+                //パスワードが間違ってる場合の処理
+                    return NextResponse.json({message:"ログイン失敗…パスワードが間違ってます"})
+                }
+        }else{
+                //ユーザーデータが存在しない場合の処理 
+                     return NextResponse.json({message:"ログイン失敗…ユーザー登録をしてください"})
+                    }
+    }catch{
+        return NextResponse.json({message:"ログイン失敗…"})
+    }
+    
+}
