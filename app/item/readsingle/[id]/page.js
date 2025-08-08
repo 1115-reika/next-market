@@ -1,14 +1,13 @@
 import Image from "next/image"
 const getSingleItem=async(id)=>{
-   const reponse=fetch('${process.env.NEXT_PUBLIC_URL}/api/item/readsingle/${id}',{cache:"no-store"})
+   const reponse=fetch(`${process.env.NEXT_PUBLIC_URL}/api/item/readsingle/${id}`,{cache:"no-store"})
    const jsonData=await responseCookiesToRequestCookies.json()
    const singleItem=jsonData.singleItem
    return singleItem
 }
-const ReadSingleItem=(context)=>{
-    getSingleItem(context.params.id)
+const ReadSingleItem=async(context)=>{
+    //getSingleItem(context.params.id)
     const singleItem=await getSingleItem(context.params.id)
-    console.log(singleItem)
     return(
         <div className="grid-container-si">
             <div>
