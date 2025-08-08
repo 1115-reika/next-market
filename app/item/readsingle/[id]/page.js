@@ -1,6 +1,6 @@
-import Image from "next/image"
+//import Image from "next/image"
 const getSingleItem=async(id)=>{
-   const reponse=fetch(`${process.env.NEXT_PUBLIC_URL}/api/item/readsingle/${id}`,{cache:"no-store"})
+  const response=await fetch(`http://localhost:3000/api/item/readsingle/${id}`,{cache:"no-store"})
    const jsonData=await responseCookiesToRequestCookies.json()
    const singleItem=jsonData.singleItem
    return singleItem
